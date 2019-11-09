@@ -13,7 +13,7 @@ library(knitr)
 
 
 ## Problem 1 ##
-```{r load data set}
+```{r problem 1}
 set.seed(10)
 
 iris_with_missing = iris %>% 
@@ -49,7 +49,27 @@ print(output)
 
 ## Problem 2 ##
 
-```{r}
+```{r problem 2}
+
+longitudinal_table = list.files(path = '.', pattern = '*.csv') %>%
+  map_df(~read_csv(.))
+
+longitudinal_table = longitudinal_table %>%
+  mutate(subject = rep(1:10, length = n())) %>%
+  mutate(arm = rep(1:2, each = 10)) %>%
+  mutate(arm = ifelse(arm == 1, 'control', 'experimental'), time = as.character(arm)) %>% 
+  select(subject, arm, week_1, week_2, week_3, week_4, week_5, week_6, week_7, week_8)%>%
+  arrange(subject, arm) %>%
+  pivot_longer(cols = starts_with('week_'), names_to = 'week', names_prefix = 'week_', values_to =   'measurement') %>%
+  mutate(week = as.numeric(week)) 
+ 
+
+spaghetti_plot = ggplot(data = longitudinal_table, aes(x = week, y = measurement, group = interaction(arm, subject), color = factor(arm))) +
+  geom_line() +
+  geom_point()
+
+print(spaghetti_plot)
+
 
 ```
 
