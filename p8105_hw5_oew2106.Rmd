@@ -1,0 +1,55 @@
+---
+title: "Homework 5"
+author: "Olivia Wagner"
+date: "11/7/2019"
+output: github_document
+---
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+```
+
+
+## Problem 1 ##
+```{r load data set}
+set.seed(10)
+
+iris_with_missing = iris %>% 
+  map_df(~replace(.x, sample(1:150, 20), NA)) %>%
+  mutate(Species = as.character(Species))
+
+
+## function which replaces missing values ##
+
+i = 1
+
+replace_missing = function(x) {
+  for(i in 1:length(x)){
+    if(is.na(x[i]) == TRUE){
+      if(is.numeric(x) == TRUE){
+          x[i] = mean(x, na.rm = TRUE)
+      }
+      else if(is.character(x) == TRUE){
+          x[i] = 'virginica'
+      } 
+    }
+  }
+  return(x)
+}
+
+## apply to iris_with_missing data set ##
+
+output = map(iris_with_missing, replace_missing)
+print(output)
+
+```
+
+
+## Problem 2 ##
+
+```{r}
+
+```
+

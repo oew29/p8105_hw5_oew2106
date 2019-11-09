@@ -1,0 +1,12 @@
+---
+title: "Homework 5"
+author: "Olivia Wagner"
+date: "11/7/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+```
+
